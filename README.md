@@ -50,7 +50,7 @@ const ParentComponent: React.FC = () => {
 
   return (
     <MasterPassProvider config={config}>
-      <ChildComponent>
+      <ChildComponent />
       {/* Other Child Components */}
     </MasterPassProvider>;
   );
