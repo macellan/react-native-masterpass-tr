@@ -92,3 +92,7 @@ export default ChildComponent;
 ## License
 
 MIT
+
+## Credits
+
+Made with ❤️ at [Macellan](https://macellan.net) by [@nrzky](https://github.com/nrzky)
