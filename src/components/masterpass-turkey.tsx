@@ -10,12 +10,25 @@ import type { IMasterPassTurkeyRefs, ICardData } from '../types/index';
 export const MasterPassTurkey = React.forwardRef<IMasterPassTurkeyRefs>(
   (_, ref) => {
     const config = useMasterPass();
-
     const webView = React.useRef<any>(null);
+
+    const isReadyRef = React.useRef(false);
+
+    const injectJS = React.useCallback((jsCode: string) => {
+      if (isReadyRef.current) {
+        setTimeout(() => {
+          webView.current?.injectJavaScript(jsCode);
+        }, 100);
+        return;
+      }
+      setTimeout(() => {
+        injectJS(jsCode);
+      }, 100);
+    }, []);
 
     /* MasterPass Account Registration Check Action */
     const handleRegistrationCheck = React.useCallback(() => {
-      webView.current?.injectJavaScript('registrationCheck()');
+      injectJS('registrationCheck()');
 
       return new Promise((resolve, reject) => {
         EventRegister.addEventListener(
@@ -57,11 +70,11 @@ export const MasterPassTurkey = React.forwardRef<IMasterPassTurkeyRefs>(
           }
         );
       });
-    }, []);
+    }, [injectJS]);
 
     /* MasterPass List Card Action */
     const handleListCards = React.useCallback(() => {
-      webView.current?.injectJavaScript('listCards()');
+      injectJS('listCards()');
 
       return new Promise((resolve, reject) => {
         EventRegister.addEventListener('list-cards', (response: any) => {
@@ -82,7 +95,7 @@ export const MasterPassTurkey = React.forwardRef<IMasterPassTurkeyRefs>(
           });
         });
       });
-    }, []);
+    }, [injectJS]);
 
     /* MasterPass Response Handler Action */
     const mfsResponseHandler = React.useCallback(
@@ -146,7 +159,7 @@ export const MasterPassTurkey = React.forwardRef<IMasterPassTurkeyRefs>(
 
     /* MasterPass Link Card To Client Action */
     const handleLinkCardToClient = React.useCallback(() => {
-      webView.current?.injectJavaScript('linkCardToClient()');
+      injectJS('linkCardToClient()');
 
       return new Promise((resolve, reject) => {
         EventRegister.addEventListener(
@@ -156,13 +169,13 @@ export const MasterPassTurkey = React.forwardRef<IMasterPassTurkeyRefs>(
           }
         );
       });
-    }, [mfsResponseHandler]);
+    }, [injectJS, mfsResponseHandler]);
 
     /* MasterPass Card Register Action */
     const handleRegister = React.useCallback(
       (cardData: ICardData) => {
         const formData = JSON.stringify(cardData);
-        webView.current?.injectJavaScript(`register(${formData})`);
+        injectJS(`register(${formData})`);
 
         return new Promise((resolve, reject) => {
           EventRegister.addEventListener('register', (response: any) => {
@@ -170,14 +183,14 @@ export const MasterPassTurkey = React.forwardRef<IMasterPassTurkeyRefs>(
           });
         });
       },
-      [mfsResponseHandler]
+      [injectJS, mfsResponseHandler]
     );
 
     /* MasterPass Verify OTP Action */
     const handleOtpVerify = React.useCallback(
       (otpData: any) => {
         const formData = JSON.stringify(otpData);
-        webView.current?.injectJavaScript(`otpVerify(${formData})`);
+        injectJS(`otpVerify(${formData})`);
 
         return new Promise((resolve, reject) => {
           EventRegister.addEventListener('otp-verify', (response: any) => {
@@ -185,14 +198,14 @@ export const MasterPassTurkey = React.forwardRef<IMasterPassTurkeyRefs>(
           });
         });
       },
-      [mfsResponseHandler]
+      [injectJS, mfsResponseHandler]
     );
 
     /* MasterPass Verify OTP Action */
     const handleMpinVerify = React.useCallback(
       (otpData: any) => {
         const formData = JSON.stringify(otpData);
-        webView.current?.injectJavaScript(`mpinVerify(${formData})`);
+        injectJS(`mpinVerify(${formData})`);
 
         return new Promise((resolve, reject) => {
           EventRegister.addEventListener('mpin-verify', (response: any) => {
@@ -200,49 +213,52 @@ export const MasterPassTurkey = React.forwardRef<IMasterPassTurkeyRefs>(
           });
         });
       },
-      [mfsResponseHandler]
+      [injectJS, mfsResponseHandler]
     );
 
     /* MasterPass Resend OTP Action */
     const handleResendOtp = React.useCallback(() => {
-      webView.current?.injectJavaScript('resendOtp()');
+      injectJS('resendOtp()');
 
       return new Promise((resolve, reject) => {
         EventRegister.addEventListener('resend-otp', (response: any) => {
           mfsResponseHandler(response, resolve, reject);
         });
       });
-    }, [mfsResponseHandler]);
+    }, [injectJS, mfsResponseHandler]);
 
     /* MasterPass Card Delete Action */
-    const handleDeleteCard = React.useCallback((cardDeleteData: any) => {
-      const formData = JSON.stringify(cardDeleteData);
-      webView.current?.injectJavaScript(`deleteCard(${formData})`);
+    const handleDeleteCard = React.useCallback(
+      (cardDeleteData: any) => {
+        const formData = JSON.stringify(cardDeleteData);
+        injectJS(`deleteCard(${formData})`);
 
-      return new Promise((resolve, reject) => {
-        EventRegister.addEventListener('delete-card', (response: any) => {
-          if (
-            response.responseCode === '0000' ||
-            response.responseCode === ''
-          ) {
-            return resolve({
+        return new Promise((resolve, reject) => {
+          EventRegister.addEventListener('delete-card', (response: any) => {
+            if (
+              response.responseCode === '0000' ||
+              response.responseCode === ''
+            ) {
+              return resolve({
+                response: response,
+              });
+            }
+
+            return reject({
+              message: response?.responseDescription,
               response: response,
+              responseCode: response?.responseCode,
             });
-          }
-
-          return reject({
-            message: response?.responseDescription,
-            response: response,
-            responseCode: response?.responseCode,
           });
         });
-      });
-    }, []);
+      },
+      [injectJS]
+    );
 
     const handlePurchase = React.useCallback(
       (purchaseData: any) => {
         const formData = JSON.stringify(purchaseData);
-        webView.current?.injectJavaScript(`purchase(${formData})`);
+        injectJS(`purchase(${formData})`);
 
         return new Promise((resolve, reject) => {
           EventRegister.addEventListener('purchase', (response: any) => {
@@ -250,7 +266,7 @@ export const MasterPassTurkey = React.forwardRef<IMasterPassTurkeyRefs>(
           });
         });
       },
-      [mfsResponseHandler]
+      [injectJS, mfsResponseHandler]
     );
 
     React.useImperativeHandle(ref, () => {
@@ -271,6 +287,12 @@ export const MasterPassTurkey = React.forwardRef<IMasterPassTurkeyRefs>(
       <WebView
         ref={webView}
         source={{ html: HtmlForm(config) }}
+        onLoadStart={() => {
+          isReadyRef.current = false;
+        }}
+        onLoadEnd={() => {
+          isReadyRef.current = true;
+        }}
         containerStyle={styles.webView}
         javaScriptEnabled={true}
         onMessage={(event: any) => {
