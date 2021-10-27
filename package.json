@@ -25,10 +25,10 @@
     "test": "jest",
     "typescript": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "prepare": "bob build",
+    "prepare": "./node_modules/.bin/bob build",
     "release": "release-it",
     "example": "yarn --cwd example",
-    "pods": "cd example && pod-install --quiet",
+    "pods": "cd example && cd ios && pod install && cd ..",
     "bootstrap": "yarn example && yarn && yarn pods"
   },
   "keywords": [
