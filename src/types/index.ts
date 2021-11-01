@@ -75,3 +75,8 @@ export interface IMasterPassTurkeyRefs {
   deleteCard: (cardDeleteData: IDeleteCardData) => Promise<any>;
   purchase: (purchaseData: IPurchaseData) => Promise<any>;
 }
+
+export interface IMasterPassTurkeyProps {
+  visible?: boolean;
+  injectTimeout?: number;
+}
