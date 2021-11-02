@@ -295,6 +295,7 @@ export const MasterPassTurkey = React.forwardRef<
         onLoadEnd={() => {
           isReadyRef.current = true;
         }}
+        hardwareAccelerationDisabledAndroid={true}
         javaScriptEnabled={true}
         onMessage={(event: any) => {
           if (event.nativeEvent.data) {
