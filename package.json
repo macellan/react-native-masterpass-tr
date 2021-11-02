@@ -1,6 +1,6 @@
 {
   "name": "@macellan/react-native-masterpass-tr",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "React Native Masterpass Turkey Package",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
