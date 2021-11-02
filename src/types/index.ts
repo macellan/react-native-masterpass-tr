@@ -62,6 +62,7 @@ export interface IPurchaseData {
   listAccountName: string;
   orderNo: string;
   referenceNo?: string;
+  paymentType?: string;
 }
 
 export interface IMasterPassTurkeyRefs {

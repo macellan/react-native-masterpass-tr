@@ -97,6 +97,7 @@ export const HtmlForm = (config: IConfig) => {
         <input type="hidden" name="sendSmsLanguage" value="${sendSmsLanguage}" />
         <input type="hidden" name="macroMerchantId" value="" />
         <input type="hidden" name="orderNo" value="" />
+        <input type="hidden" name="paymentType" value="" />
 
         <input type="hidden" name="installmentCount" value="" /> (Optional)
         <input type="hidden" name="rewardName" value="" /> (Optional)
