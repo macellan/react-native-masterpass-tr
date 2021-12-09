@@ -16,7 +16,6 @@ const config: IConfig = {
   sendSms: '',
   referenceNo: '',
   clientIp: '',
-  sdkUrl: '',
 };
 
 const App: React.FC = () => {

@@ -16,7 +16,6 @@ export interface IConfig {
   sendSms: string;
   referenceNo: string;
   clientIp: string;
-  sdkUrl: string;
 }
 
 export interface ICardData {
