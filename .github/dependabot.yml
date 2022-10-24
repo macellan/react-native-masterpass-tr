@@ -10,3 +10,4 @@ updates:
     schedule:
       interval: "weekly"
 1
+Create dependabot.yml 
