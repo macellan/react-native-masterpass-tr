@@ -16,7 +16,6 @@ export interface IConfig {
   sendSms: string;
   referenceNo: string;
   clientIp: string;
-  sdkUrl: string;
 }
 
 export interface ICardData {
@@ -62,6 +61,7 @@ export interface IPurchaseData {
   listAccountName: string;
   orderNo: string;
   referenceNo?: string;
+  paymentType?: string;
 }
 
 export interface IMasterPassTurkeyRefs {
@@ -74,4 +74,9 @@ export interface IMasterPassTurkeyRefs {
   resendOtp: () => Promise<any>;
   deleteCard: (cardDeleteData: IDeleteCardData) => Promise<any>;
   purchase: (purchaseData: IPurchaseData) => Promise<any>;
+}
+
+export interface IMasterPassTurkeyProps {
+  visible?: boolean;
+  injectTimeout?: number;
 }

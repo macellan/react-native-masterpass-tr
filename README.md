@@ -45,7 +45,6 @@ const ParentComponent: React.FC = () => {
     sendSms: '',
     referenceNo: '',
     clientIp: '',
-    sdkUrl: '',
   };
 
   return (
