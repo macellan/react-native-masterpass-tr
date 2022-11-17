@@ -122,6 +122,12 @@ export const service = ({
       MFS.setClientId("${clientId}");
       MFS.setAddress('${serviceUrl}');
 
+      const additionalData = formObject.additionalData;
+        
+      if (additionalData) {
+        MFS.setAdditionalParameters(additionalData);
+      }
+
       formSetter(formObject, "#purchase-form");
 
       MFS.purchase($("#purchase-form"), function(status, response) {
