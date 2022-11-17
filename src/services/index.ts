@@ -122,13 +122,19 @@ export const service = ({
       MFS.setClientId("${clientId}");
       MFS.setAddress('${serviceUrl}');
 
-      const additionalData = formObject.additionalData;
+      const otherFormObject = {};
+
+      Object.keys(formObject).forEach(key => {
+        if (key !== 'additionalData') {
+          otherFormObject[key] = formObject[key];
+        }
+      });
         
-      if (additionalData) {
-        MFS.setAdditionalParameters(additionalData);
+      if (formObject?.additionalData) {
+        MFS.setAdditionalParameters(formObject.additionalData);
       }
 
-      formSetter(formObject, "#purchase-form");
+      formSetter(otherFormObject, "#purchase-form");
 
       MFS.purchase($("#purchase-form"), function(status, response) {
         returnResponse({
